@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="id" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InventarisPro — Sistem Informasi Inventaris & Manajemen Stok Modern</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        /* ==========================================================================
+           1. VARIABEL & KONFIGURASI TEMA DARK MODE ELEGAN
+           ========================================================================== */
+        :root {
+            --bg-primary: #0f172a;      /* Slate 900 */
+            --bg-secondary: #1e293b;    /* Slate 800 */
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --border-subtle: rgba(148, 163, 184, 0.14);
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --accent-emerald: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, h5, .navbar-brand {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* ==========================================================================
+           2. UTILITAS WARNA, EFEK KACA (GLASSMORPHISM) & GRADIEN
+           ========================================================================== */
+        .bg-slate-900 { background-color: var(--bg-primary) !important; }
+        .bg-slate-800 { background-color: var(--bg-secondary) !important; }
+        .text-slate-400 { color: var(--text-muted) !important; }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #34d399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-gradient-primary {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%);
+            border: none;
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.3);
+            transition: all 0.25s ease;
+        }
+
+        .btn-gradient-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.45);
+            color: #ffffff;
+        }
+
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 1rem;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(56, 189, 248, 0.45);
+            box-shadow: 0 12px 30px -10px rgba(6, 182, 212, 0.2);
+        }
+
+        /* ==========================================================================
+           3. NAVBAR
+           ========================================================================== */
+        .navbar-custom {
+            background-color: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding-top: 0.9rem;
+            padding-bottom: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link {
+            color: var(--text-muted) !important;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #38bdf8 !important;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-emerald));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        /* ==========================================================================
+           4. HERO SECTION & MOCKUP DASHBOARD INTERAKTIF
+           ========================================================================== */
+        .hero-section {
+            position: relative;
+            padding-top: 7.5rem;
+            padding-bottom: 5rem;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(59, 130, 246, 0.14) 0%, transparent 45%),
+                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.12) 0%, transparent 45%);
+        }
+
+        .dashboard-mockup {
+            background: #131c31;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 1.25rem;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.65);
+            overflow: hidden;
+        }
+
+        .mockup-topbar {
+            background: #0b1120;
+            padding: 0.75rem 1.25rem;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .window-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .kpi-box {
+            background: rgba(30, 41, 59, 0.65);
+            border: 1px solid var(--border-subtle);
+            border-radius: 0.75rem;
+            padding: 0.9rem;
+        }
+
+        .table-mockup {
+            --bs-table-bg: transparent;
+            --bs-table-color: #e2e8f0;
+            --bs-table-border-color: rgba(148, 163, 184, 0.12);
+            font-size: 0.875rem;
+        }
+
+        .table-mockup th {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            letter-spacing: 0.04em;
+        }
+
+        /* ==========================================================================
+           5. ICON BOX & ALUR KERJA (WORKFLOW)
+           ========================================================================== */
+        .feature-icon-wrap {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .step-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+            box-shadow: 0 0 0 6px rgba(6, 182, 212, 0.15);
+        }
+
+        /* Animasi Reveal halus saat scroll */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+        }
+
+        .reveal-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* CTA Banner */
+        .cta-banner {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-banner::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 340px;
+            height: 340px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.18), transparent 70%);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================================================================
+         1. NAVBAR RESPONSIF
+         ====================================================================== -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-custom">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold fs-4" href="#beranda">
+                <span class="brand-icon"><i class="bi bi-box-seam-fill"></i></span>
+                <span>Inventaris<span class="text-info">Pro</span></span>
+            </a>
+
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigasi">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
+                    <li class="nav-item"><a class="nav-link active" href="#beranda">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#fitur">Fitur</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#statistik">Statistik</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#alur-kerja">Alur Kerja</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tentang">Tentang</a></li>
+                </ul>
+
+                <div class="d-flex flex-column flex-sm-row gap-2">
+                    <button type="button" class="btn btn-outline-light btn-sm px-3 py-2 rounded-3" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Masuk / Login
+                    </button>
+                    <button type="button" class="btn btn-gradient-primary btn-sm px-3 py-2 rounded-3" data-bs-toggle="modal" data-bs-target="#demoModal">
+                        <i class="bi bi-play-circle-fill me-1"></i> Coba Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ======================================================================
+         2. HERO SECTION & MOCKUP INTERAKTIF DASHBOARD INVENTARIS
+         ====================================================================== -->
+    <section id="beranda" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center gy-5">
+                <!-- Kolom Kiri: Headline & CTA -->
+                <div class="col-lg-5 reveal-up">
+                    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-slate-800 border border-secondary border-opacity-25 text-info small fw-medium mb-3">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                        <span>Sistem Manajemen Aset & Gudang v2.5</span>
+                    </div>
+
+                    <h1 class="display-5 fw-extrabold lh-sm mb-3">
+                        Kendali Penuh atas <span class="text-gradient">Stok & Aset Barang</span> Secara Real-Time
+                    </h1>
+
+                    <p class="lead text-slate-400 fs-6 mb-4">
+                        Tinggalkan pencatatan manual yang rawan selisih. Pantau pergerakan barang masuk dan keluar, notifikasi stok menipis, hingga laporan audit gudang dalam satu platform terpadu.
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        <button type="button" class="btn btn-gradient-primary px-4 py-3 rounded-3" data-bs-toggle="modal" data-bs-target="#demoModal">
+                            Mulai Simulasi Demo <i class="bi bi-arrow-right ms-2"></i>
+                        </button>
+                        <a href="#fitur" class="btn btn-outline-secondary text-light px-4 py-3 rounded-3">
+                            Pelajari Fitur
+                        </a>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-4 text-slate-400 small">
+                        <div><i class="bi bi-check-circle-fill text-success me-1"></i> Multi-Gudang</div>
+                        <div><i class="bi bi-check-circle-fill text-success me-1"></i> Scan QR / Barcode</div>
+                        <div><i class="bi bi-check-circle-fill text-success me-1"></i> Export Excel & PDF</div>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan: Mockup Interaktif Dashboard -->
+                <div class="col-lg-7 reveal-up">
+                    <div class="dashboard-mockup">
+                        <!-- Topbar Window Mockup -->
+                        <div class="mockup-topbar">
+                            <div class="d-flex align-items-center">
+                                <span class="window-dot bg-danger"></span>
+                                <span class="window-dot bg-warning"></span>
+                                <span class="window-dot bg-success"></span>
+                                <span class="ms-2 small text-slate-400 font-monospace">app.inventarispro.id/dashboard</span>
+                            </div>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">
+                                <i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i> Live Preview Interaktif
+                            </span>
+                        </div>
+
+                        <div class="p-3 p-md-4">
+                            <!-- Ringkasan KPI Mini -->
+                            <div class="row g-2 g-md-3 mb-4">
+                                <div class="col-6 col-sm-3">
+                                    <div class="kpi-box">
+                                        <div class="text-slate-400 small">Total Barang</div>
+                                        <div class="fs-5 fw-bold text-white mt-1" id="kpiTotalBarang">1.248</div>
+                                        <div class="text-info" style="font-size: 0.72rem;"><i class="bi bi-box"></i> 14 Kategori</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <div class="kpi-box">
+                                        <div class="text-slate-400 small">Stok Menipis</div>
+                                        <div class="fs-5 fw-bold text-warning mt-1" id="kpiStokMenipis">2</div>
+                                        <div class="text-warning" style="font-size: 0.72rem;"><i class="bi bi-exclamation-triangle"></i> Perlu Restock</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <div class="kpi-box">
+                                        <div class="text-slate-400 small">Barang Masuk</div>
+                                        <div class="fs-5 fw-bold text-success mt-1">+84</div>
+                                        <div class="text-slate-400" style="font-size: 0.72rem;">Bulan ini</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <div class="kpi-box">
+                                        <div class="text-slate-400 small">Barang Keluar</div>
+                                        <div class="fs-5 fw-bold text-primary mt-1">-52</div>
+                                        <div class="text-slate-400" style="font-size: 0.72rem;">Bulan ini</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Toolbar Pencarian & Filter Interaktif -->
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
+                                <div class="input-group input-group-sm" style="max-width: 260px;">
+                                    <span class="input-group-text bg-slate-900 border-secondary border-opacity-25 text-slate-400">
+                                        <i class="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" id="searchInventoryInput" class="form-control bg-slate-900 border-secondary border-opacity-25 text-light" placeholder="Cari kode atau nama barang...">
+                                </div>
+
+                                <div class="btn-group btn-group-sm" role="group" aria-label="Filter status stok">
+                                    <button type="button" class="btn btn-outline-info active filter-status-btn" data-filter="all">Semua</button>
+                                    <button type="button" class="btn btn-outline-info filter-status-btn" data-filter="aman">Aman</button>
+                                    <button type="button" class="btn btn-outline-info filter-status-btn" data-filter="menipis">Menipis</button>
+                                </div>
+                            </div>
+
+                            <!-- Tabel Preview Mini -->
+                            <div class="table-responsive">
+                                <table class="table table-mockup align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Kode</th>
+                                            <th>Nama Barang</th>
+                                            <th>Lokasi</th>
+                                            <th class="text-center">Stok</th>
+                                            <th class="text-end">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inventoryPreviewBody">
+                                        <!-- Diisi dinamis via JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         STATISTIK SINGKAT (TRUST & METRICS)
+         ====================================================================== -->
+    <section id="statistik" class="py-4 border-top border-bottom border-secondary border-opacity-10 bg-slate-800 bg-opacity-25">
+        <div class="container">
+            <div class="row text-center g-4">
+                <div class="col-6 col-md-3 reveal-up">
+                    <h3 class="fw-bold text-info mb-0">99,9%</h3>
+                    <p class="text-slate-400 small mb-0">Akurasi Pencatatan Stok</p>
+                </div>
+                <div class="col-6 col-md-3 reveal-up">
+                    <h3 class="fw-bold text-emerald-400 text-success mb-0">3x Lebih Cepat</h3>
+                    <p class="text-slate-400 small mb-0">Proses Stock Opname</p>
+                </div>
+                <div class="col-6 col-md-3 reveal-up">
+                    <h3 class="fw-bold text-primary mb-0">500+</h3>
+                    <p class="text-slate-400 small mb-0">Gudang & Instansi Aktif</p>
+                </div>
+                <div class="col-6 col-md-3 reveal-up">
+                    <h3 class="fw-bold text-warning mb-0">24/7</h3>
+                    <p class="text-slate-400 small mb-0">Monitoring Berbasis Cloud</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         3. FITUR UTAMA (GRID 6 KARTU MODERN)
+         ====================================================================== -->
+    <section id="fitur" class="py-5 my-4">
+        <div class="container">
+            <div class="text-center max-w-2xl mx-auto mb-5 reveal-up">
+                <span class="text-info fw-semibold small text-uppercase tracking-wider">Fitur Unggulan</span>
+                <h2 class="fw-bold mt-2">Semua Kebutuhan Manajemen Inventaris dalam Satu Sistem</h2>
+                <p class="text-slate-400 mx-auto" style="max-width: 620px;">
+                    Dirancang untuk mempermudah operasional tim gudang, pengadaan, hingga manajemen dalam memantau setiap aset perusahaan.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Fitur 1 -->
+                <div class="col-md-6 col-lg-4 reveal-up">
+                    <div class="glass-card feature-card h-100 p-4">
+                        <div class="feature-icon-wrap bg-info bg-opacity-10 text-info">
+                            <i class="bi bi-speedometer2"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Manajemen Stok Real-Time</h5>
+                        <p class="text-slate-400 small mb-0">
+                            Pantau jumlah ketersediaan barang secara langsung setiap detik dengan peringatan otomatis saat stok mencapai batas minimum.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fitur 2 -->
+                <div class="col-md-6 col-lg-4 reveal-up">
+                    <div class="glass-card feature-card h-100 p-4">
+                        <div class="feature-icon-wrap bg-success bg-opacity-10 text-success">
+                            <i class="bi bi-arrow-left-right"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Pelacakan Barang Masuk & Keluar</h5>
+                        <p class="text-slate-400 small mb-0">
+                            Catat setiap riwayat penerimaan dari supplier maupun distribusi barang keluar lengkap dengan nomor referensi dan penanggung jawab.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fitur 3 -->
+                <div class="col-md-6 col-lg-4 reveal-up">
+                    <div class="glass-card feature-card h-100 p-4">
+                        <div class="feature-icon-wrap bg-primary bg-opacity-10 text-primary">
+                            <i class="bi bi-qr-code-scan"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Scan Barcode / QR Code</h5>
+                        <p class="text-slate-400 small mb-0">
+                            Percepat pencarian item dan proses transaksi gudang cukup dengan memindai label Barcode atau QR Code menggunakan kamera maupun scanner.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fitur 4 -->
+                <div class="col-md-6 col-lg-4 reveal-up">
+                    <div class="glass-card feature-card h-100 p-4">
+                        <div class="feature-icon-wrap bg-warning bg-opacity-10 text-warning">
+                            <i class="bi bi-file-earmark-bar-graph"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Laporan & Export (PDF & Excel)</h5>
+                        <p class="text-slate-400 small mb-0">
+                            Hasilkan rekap mutasi barang, kartu stok, dan valuasi aset secara instan dalam format PDF siap cetak maupun spreadsheet Excel.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fitur 5 -->
+                <div class="col-md-6 col-lg-4 reveal-up">
+                    <div class="glass-card feature-card h-100 p-4">
+                        <div class="feature-icon-wrap bg-info bg-opacity-10 text-info">
+                            <i class="bi bi-buildings"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Manajemen Kategori & Lokasi Gudang</h5>
+                        <p class="text-slate-400 small mb-0">
+                            Kelompokkan barang berdasarkan kategori, rak penyimpanan, hingga cabang gudang yang berbeda agar pencarian fisik lebih terstruktur.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fitur 6 -->
+                <div class="col-md-6 col-lg-4 reveal-up">
+                    <div class="glass-card feature-card h-100 p-4">
+                        <div class="feature-icon-wrap bg-success bg-opacity-10 text-success">
+                            <i class="bi bi-shield-lock"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Hak Akses Multi-User</h5>
+                        <p class="text-slate-400 small mb-0">
+                            Atur pembagian peran yang jelas antara Admin, Kepala Gudang, dan Petugas Operasional lengkap dengan log aktivitas pengguna.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         4. BAGIAN ALUR KERJA / CARA KERJA SISTEM (4 LANGKAH)
+         ====================================================================== -->
+    <section id="alur-kerja" class="py-5 bg-slate-800 bg-opacity-30 border-top border-bottom border-secondary border-opacity-10">
+        <div class="container py-3">
+            <div class="text-center mb-5 reveal-up">
+                <span class="text-success fw-semibold small text-uppercase">Alur Kerja Praktis</span>
+                <h2 class="fw-bold mt-2">4 Langkah Mudah Mengelola Inventaris Anda</h2>
+                <p class="text-slate-400 mx-auto" style="max-width: 580px;">
+                    Alur sistem yang intuitif memastikan tim Anda dapat langsung beradaptasi tanpa pelatihan yang rumit.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Langkah 1 -->
+                <div class="col-sm-6 col-lg-3 reveal-up">
+                    <div class="glass-card h-100 p-4 text-center">
+                        <div class="step-badge">1</div>
+                        <h5 class="fw-bold">Input Data Barang</h5>
+                        <p class="text-slate-400 small mb-0">
+                            Daftarkan master barang, satuan, kategori, lokasi rak, serta cetak label QR Code untuk masing-masing item.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Langkah 2 -->
+                <div class="col-sm-6 col-lg-3 reveal-up">
+                    <div class="glass-card h-100 p-4 text-center">
+                        <div class="step-badge">2</div>
+                        <h5 class="fw-bold">Catat Transaksi</h5>
+                        <p class="text-slate-400 small mb-0">
+                            Input barang masuk dari supplier atau barang keluar ke divisi/pelanggan hanya dalam hitungan detik.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Langkah 3 -->
+                <div class="col-sm-6 col-lg-3 reveal-up">
+                    <div class="glass-card h-100 p-4 text-center">
+                        <div class="step-badge">3</div>
+                        <h5 class="fw-bold">Monitoring Otomatis</h5>
+                        <p class="text-slate-400 small mb-0">
+                            Saldo stok terhitung otomatis dan sistem memberikan notifikasi apabila terdapat stok yang hampir habis.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Langkah 4 -->
+                <div class="col-sm-6 col-lg-3 reveal-up">
+                    <div class="glass-card h-100 p-4 text-center">
+                        <div class="step-badge">4</div>
+                        <h5 class="fw-bold">Cetak Laporan</h5>
+                        <p class="text-slate-400 small mb-0">
+                            Unduh laporan rekap stok harian, bulanan, atau hasil stock opname dalam format PDF dan Excel kapan saja.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         5. CALL-TO-ACTION (CTA) & TENTANG SINGKAT
+         ====================================================================== -->
+    <section id="tentang" class="py-5 my-4">
+        <div class="container">
+            <div class="cta-banner rounded-4 p-4 p-md-5 reveal-up">
+                <div class="row align-items-center gy-4">
+                    <div class="col-lg-8">
+                        <h2 class="fw-bold mb-2">Siap Meningkatkan Efisiensi Gudang & Aset Anda?</h2>
+                        <p class="text-slate-400 mb-0">
+                            Uji coba langsung simulasi transaksi barang masuk dan keluar sekarang juga tanpa perlu instalasi rumit.
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <div class="d-flex flex-wrap justify-content-lg-end gap-2">
+                            <button type="button" class="btn btn-gradient-primary px-4 py-3 rounded-3" data-bs-toggle="modal" data-bs-target="#demoModal">
+                                <i class="bi bi-rocket-takeoff-fill me-2"></i> Coba Demo Interaktif
+                            </button>
+                            <button type="button" class="btn btn-outline-light px-4 py-3 rounded-3" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                Masuk Akun
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         FOOTER LENGKAP
+         ====================================================================== -->
+    <footer class="border-top border-secondary border-opacity-15 pt-5 pb-4 bg-slate-900">
+        <div class="container">
+            <div class="row gy-4 pb-4">
+                <div class="col-lg-4">
+                    <a class="navbar-brand d-flex align-items-center gap-2 fw-bold fs-4 mb-3" href="#beranda">
+                        <span class="brand-icon"><i class="bi bi-box-seam-fill"></i></span>
+                        <span>Inventaris<span class="text-info">Pro</span></span>
+                    </a>
+                    <p class="text-slate-400 small">
+                        Platform Sistem Informasi Inventaris & Manajemen Aset modern untuk membantu bisnis, sekolah, rumah sakit, dan instansi mengelola stok secara akurat.
+                    </p>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-2 offset-lg-1">
+                    <h6 class="fw-bold text-white mb-3">Tautan Cepat</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                        <li><a href="#beranda" class="text-decoration-none text-slate-400">Beranda</a></li>
+                        <li><a href="#fitur" class="text-decoration-none text-slate-400">Fitur Utama</a></li>
+                        <li><a href="#statistik" class="text-decoration-none text-slate-400">Statistik</a></li>
+                        <li><a href="#alur-kerja" class="text-decoration-none text-slate-400">Alur Kerja</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-2">
+                    <h6 class="fw-bold text-white mb-3">Akses Sistem</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                        <li><a href="#" class="text-decoration-none text-slate-400" data-bs-toggle="modal" data-bs-target="#loginModal">Login Admin</a></li>
+                        <li><a href="#" class="text-decoration-none text-slate-400" data-bs-toggle="modal" data-bs-target="#loginModal">Login Petugas</a></li>
+                        <li><a href="#" class="text-decoration-none text-slate-400" data-bs-toggle="modal" data-bs-target="#demoModal">Simulasi Gudang</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 col-lg-3">
+                    <h6 class="fw-bold text-white mb-3">Kontak Kami</h6>
+                    <ul class="list-unstyled small text-slate-400 d-flex flex-column gap-2">
+                        <li><i class="bi bi-geo-alt text-info me-2"></i> Jl. Sudirman No. 88, Jakarta</li>
+                        <li><i class="bi bi-envelope text-info me-2"></i> halo@inventarispro.id</li>
+                        <li><i class="bi bi-telephone text-info me-2"></i> +62 21 5550 1928</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-top border-secondary border-opacity-15 pt-4 d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 small text-slate-400">
+                <div>&copy; <span id="currentYear"></span> InventarisPro. Hak Cipta Dilindungi Undang-Undang.</div>
+                <div class="d-flex gap-3">
+                    <a href="#" class="text-slate-400"><i class="bi bi-github"></i></a>
+                    <a href="#" class="text-slate-400"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" class="text-slate-400"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======================================================================
+         MODAL 1: SIMULASI LOGIN (ADMIN / PETUGAS)
+         ====================================================================== -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-slate-800 border border-secondary border-opacity-25 rounded-4">
+                <div class="modal-header border-secondary border-opacity-15">
+                    <h5 class="modal-title fw-bold d-flex align-items-center gap-2" id="loginModalLabel">
+                        <i class="bi bi-shield-lock text-info"></i> Masuk ke InventarisPro
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div id="loginFeedback" class="alert d-none small py-2" role="alert"></div>
+
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginRole" class="form-label small text-slate-400">Pilih Peran Akses</label>
+                            <select id="loginRole" class="form-select bg-slate-900 border-secondary border-opacity-25 text-light">
+                                <option value="Administrator">Administrator Gudang</option>
+                                <option value="Petugas Operasional">Petugas Operasional</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label small text-slate-400">Email / Username</label>
+                            <input type="email" id="loginEmail" class="form-control bg-slate-900 border-secondary border-opacity-25 text-light" value="admin@inventarispro.id" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="loginPassword" class="form-label small text-slate-400">Kata Sandi</label>
+                            <input type="password" id="loginPassword" class="form-control bg-slate-900 border-secondary border-opacity-25 text-light" value="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn btn-gradient-primary w-100 py-2 rounded-3">
+                            Masuk ke Dashboard
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         MODAL 2: SIMULASI TRANSAKSI BARANG MASUK / KELUAR INTERAKTIF
+         ====================================================================== -->
+    <div class="modal fade" id="demoModal" tabindex="-1" aria-labelledby="demoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-slate-800 border border-secondary border-opacity-25 rounded-4">
+                <div class="modal-header border-secondary border-opacity-15">
+                    <h5 class="modal-title fw-bold d-flex align-items-center gap-2" id="demoModalLabel">
+                        <i class="bi bi-arrow-left-right text-success"></i> Simulasi Transaksi Stok
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="small text-slate-400 mb-3">
+                        Coba lakukan transaksi <strong>Barang Masuk</strong> atau <strong>Barang Keluar</strong> di bawah ini dan lihat perubahan stok secara langsung pada tabel dashboard halaman utama!
+                    </p>
+
+                    <div id="demoFeedback" class="alert d-none small py-2" role="alert"></div>
+
+                    <form id="demoTransactionForm">
+                        <div class="mb-3">
+                            <label for="demoItemSelect" class="form-label small text-slate-400">Pilih Barang</label>
+                            <select id="demoItemSelect" class="form-select bg-slate-900 border-secondary border-opacity-25 text-light"></select>
+                        </div>
+
+                        <div class="row g-2 mb-4">
+                            <div class="col-6">
+                                <label for="demoTxType" class="form-label small text-slate-400">Jenis Transaksi</label>
+                                <select id="demoTxType" class="form-select bg-slate-900 border-secondary border-opacity-25 text-light">
+                                    <option value="in">Barang Masuk (+)</option>
+                                    <option value="out">Barang Keluar (-)</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="demoTxQty" class="form-label small text-slate-400">Jumlah Unit</label>
+                                <input type="number" id="demoTxQty" class="form-control bg-slate-900 border-secondary border-opacity-25 text-light" min="1" max="500" value="5" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-gradient-primary w-100 py-2 rounded-3">
+                            Proses Transaksi & Update Stok
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        /**
+         * Data Inventaris Ringkas untuk Simulasi Preview Dashboard
+         */
+        const inventoryItems = [
+            { code: "BRG-001", name: "Laptop ThinkPad X1", location: "Rak A-01", stock: 24, minStock: 10 },
+            { code: "BRG-002", name: "Scanner Barcode 2D", location: "Rak B-04", stock: 4, minStock: 8 },
+            { code: "BRG-003", name: "Router WiFi 6 Enterprise", location: "Rak A-03", stock: 18, minStock: 5 },
+            { code: "BRG-004", name: "Kertas Label Thermal", location: "Rak C-02", stock: 3, minStock: 10 }
+        ];
+
+        let activeFilter = "all";
+        let searchQuery = "";
+
+        // Elemen DOM
+        const tbodyEl = document.getElementById("inventoryPreviewBody");
+        const searchInputEl = document.getElementById("searchInventoryInput");
+        const filterBtns = document.querySelectorAll(".filter-status-btn");
+        const kpiMenipisEl = document.getElementById("kpiStokMenipis");
+        const demoItemSelectEl = document.getElementById("demoItemSelect");
+
+        /**
+         * Render ulang tabel preview dashboard & update indikator stok menipis
+         */
+        function renderInventoryTable() {
+            // Hitung jumlah item dengan stok menipis
+            const lowStockCount = inventoryItems.filter(item => item.stock <= item.minStock).length;
+            kpiMenipisEl.textContent = lowStockCount;
+
+            // Filter data berdasarkan pencarian & status
+            const filtered = inventoryItems.filter(item => {
+                const isLow = item.stock <= item.minStock;
+                const matchesFilter =
+                    activeFilter === "all" ||
+                    (activeFilter === "menipis" && isLow) ||
+                    (activeFilter === "aman" && !isLow);
+
+                const matchesSearch =
+                    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    item.code.toLowerCase().includes(searchQuery.toLowerCase());
+
+                return matchesFilter && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                tbodyEl.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center text-slate-400 py-3">
+                            Tidak ada barang yang sesuai dengan filter saat ini.
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            tbodyEl.innerHTML = filtered.map(item => {
+                const isLow = item.stock <= item.minStock;
+                const badgeClass = isLow
+                    ? "bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25"
+                    : "bg-success bg-opacity-10 text-success border border-success border-opacity-25";
+                const statusText = isLow ? "Menipis" : "Aman";
+
+                return `
+                    <tr>
+                        <td class="font-monospace text-info">${item.code}</td>
+                        <td class="fw-medium">${item.name}</td>
+                        <td class="text-slate-400">${item.location}</td>
+                        <td class="text-center fw-bold">${item.stock}</td>
+                        <td class="text-end">
+                            <span class="badge ${badgeClass}">${statusText}</span>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        /**
+         * Isi pilihan barang di dalam Modal Simulasi Demo
+         */
+        function populateDemoSelect() {
+            demoItemSelectEl.innerHTML = inventoryItems.map((item, idx) =>
+                `<option value="${idx}">${item.code} — ${item.name} (Stok: ${item.stock})</option>`
+            ).join("");
+        }
+
+        // Event: Pencarian real-time di tabel mockup
+        searchInputEl.addEventListener("input", (e) => {
+            searchQuery = e.target.value.trim();
+            renderInventoryTable();
+        });
+
+        // Event: Tombol filter status (Semua / Aman / Menipis)
+        filterBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                filterBtns.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                activeFilter = btn.getAttribute("data-filter");
+                renderInventoryTable();
+            });
+        });
+
+        // Event: Simulasi Form Login
+        document.getElementById("loginForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const role = document.getElementById("loginRole").value;
+            const feedback = document.getElementById("loginFeedback");
+            feedback.className = "alert alert-success small py-2";
+            feedback.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i> Autentikasi berhasil sebagai <strong>${role}</strong>. Mengalihkan ke ruang kerja...`;
+        });
+
+        // Event: Simulasi Transaksi Masuk / Keluar pada Modal Demo
+        document.getElementById("demoTransactionForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const itemIndex = parseInt(document.getElementById("demoItemSelect").value, 10);
+            const txType = document.getElementById("demoTxType").value;
+            const qty = parseInt(document.getElementById("demoTxQty").value, 10);
+            const feedback = document.getElementById("demoFeedback");
+            const selectedItem = inventoryItems[itemIndex];
+
+            if (txType === "out" && qty > selectedItem.stock) {
+                feedback.className = "alert alert-danger small py-2";
+                feedback.innerHTML = `<i class="bi bi-exclamation-circle-fill me-1"></i> Stok tidak mencukupi! Sisa stok <strong>${selectedItem.name}</strong> hanya ${selectedItem.stock} unit.`;
+                return;
+            }
+
+            if (txType === "in") {
+                selectedItem.stock += qty;
+            } else {
+                selectedItem.stock -= qty;
+            }
+
+            renderInventoryTable();
+            populateDemoSelect();
+
+            feedback.className = "alert alert-success small py-2";
+            feedback.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i> Transaksi berhasil! Stok <strong>${selectedItem.name}</strong> kini menjadi <strong>${selectedItem.stock} unit</strong>.`;
+        });
+
+        // Animasi Scroll Reveal dengan IntersectionObserver
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll(".reveal-up").forEach(el => revealObserver.observe(el));
+
+        // Inisialisasi saat halaman dimuat
+        document.getElementById("currentYear").textContent = new Date().getFullYear();
+        renderInventoryTable();
+        populateDemoSelect();
+    </script>
+</body>
+</html>
